@@ -7,13 +7,16 @@ function ProductCard({
   price,
   rating,
   image,
-  setCartItems,
   wishlistItems,
   setWishlistItems,
 }) {
   const [showDetails, setShowDetails] = useState(false);
 
   const { addToCart } = useCart();
+
+  const isWishlisted = wishlistItems.some(
+    (item) => item.id === id
+  );
 
   function handleCart() {
     addToCart({
@@ -26,11 +29,7 @@ function ProductCard({
   }
 
   function handleWishlist() {
-    const alreadyAdded = wishlistItems.some(
-      (item) => item.id === id
-    );
-
-    if (alreadyAdded) {
+    if (isWishlisted) {
       setWishlistItems(
         wishlistItems.filter((item) => item.id !== id)
       );
@@ -48,71 +47,102 @@ function ProductCard({
     }
   }
 
-  const isWishlisted = wishlistItems.some(
-    (item) => item.id === id
-  );
-
   return (
     <div className="product-card">
 
-      <div className="product-image">
+      <div className="product-image-wrapper">
+
+        <span className="discount-badge">
+          SALE
+        </span>
+
+        <button
+          className={`wishlist-button ${
+            isWishlisted ? "active" : ""
+          }`}
+          onClick={handleWishlist}
+        >
+          {isWishlisted ? "❤️" : "🤍"}
+        </button>
+
         <img
           src={image}
           alt={name}
+          className="product-card-image"
         />
+
       </div>
 
-      <h2>{name}</h2>
+      <div className="product-card-content">
 
-      <p>⭐ {rating}</p>
+        <p className="product-brand">
+          {name.split(" ")[0]}
+        </p>
 
-      <h3>₹{price}</h3>
+        <h2>{name}</h2>
 
-      <button onClick={handleCart}>
-        🛒 Add to Cart
-      </button>
-
-      <button
-        onClick={handleWishlist}
-        style={{ marginTop: "10px" }}
-      >
-        {isWishlisted
-          ? "❤️ Remove Wishlist"
-          : "🤍 Add to Wishlist"}
-      </button>
-
-      <button
-        onClick={() => setShowDetails(!showDetails)}
-        style={{ marginTop: "10px" }}
-      >
-        {showDetails
-          ? "Hide Details"
-          : "View Details"}
-      </button>
-
-      {showDetails && (
-        <div className="details-box">
-          <p>
-            <b>Brand:</b> {name.split(" ")[0]}
-          </p>
-
-          <p>
-            <b>Price:</b> ₹{price}
-          </p>
-
-          <p>
-            <b>Rating:</b> ⭐ {rating}
-          </p>
-
-          <p>
-            <b>Delivery:</b> Free Delivery
-          </p>
-
-          <p>
-            <b>Return:</b> 7 Days Return
-          </p>
+        <div className="rating">
+          ⭐ {rating}
         </div>
-      )}
+
+        <h3 className="product-price">
+          ₹{price}
+        </h3>
+
+        <div className="product-info">
+          🚚 Free Delivery
+        </div>
+
+        <div className="product-info">
+          🔄 7 Days Return
+        </div>
+
+        <button
+          className="cart-button"
+          onClick={handleCart}
+        >
+          🛒 Add to Cart
+        </button>
+
+        <button
+          className="details-button"
+          onClick={() =>
+            setShowDetails(!showDetails)
+          }
+        >
+          {showDetails
+            ? "Hide Details"
+            : "View Details"}
+        </button>
+
+        {showDetails && (
+          <div className="details-box">
+
+            <p>
+              <b>Brand:</b>{" "}
+              {name.split(" ")[0]}
+            </p>
+
+            <p>
+              <b>Price:</b> ₹{price}
+            </p>
+
+            <p>
+              <b>Rating:</b> ⭐ {rating}
+            </p>
+
+            <p>
+              <b>Delivery:</b> Free Delivery
+            </p>
+
+            <p>
+              <b>Return:</b> 7 Days Return
+            </p>
+
+          </div>
+        )}
+
+      </div>
 
     </div>
   );
