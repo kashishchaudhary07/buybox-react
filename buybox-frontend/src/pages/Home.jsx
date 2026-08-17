@@ -1,5 +1,8 @@
 import { useState } from "react";
 import Hero from "../components/Hero";
+import Deals from "../components/Deals";
+import Reviews from "../components/Reviews";
+import Footer from "../components/Footer";
 import Brands from "../components/Brands";
 import ProductCard from "../components/ProductCard";
 import SearchBar from "../components/SearchBar";
@@ -68,6 +71,10 @@ function Home({
 
       {/* Featured Brands */}
       <Brands />
+
+<Deals />
+<Reviews />
+<Footer />
 
       {/* Products Section */}
       <div className="hero">
@@ -151,6 +158,7 @@ function Home({
               name={product.name}
               price={product.price}
               rating={product.rating}
+              image={product.image}
               setCartItems={setCartItems}
               wishlistItems={wishlistItems}
               setWishlistItems={setWishlistItems}
